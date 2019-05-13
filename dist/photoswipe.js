@@ -1,4 +1,4 @@
-/*! PhotoSwipe - v4.1.3 - 2019-01-08
+/*! PhotoSwipe - v4.1.3 - 2019-05-13
 * http://photoswipe.com
 * Copyright (c) 2019 Dmitry Semenov; */
 (function (root, factory) { 
@@ -2846,6 +2846,13 @@ var _getItemAt,
 			item.loading = false;
 			item.loaded = true;
 
+			item.w = item.img.naturalWidth;
+			item.h = item.img.naturalHeight;
+			_calculateItemSize(item, _viewportSize);
+			_applyZoomPanToItem(item);
+			_setImageSize( item, item.img );
+
+
 			if(item.loadComplete) {
 				item.loadComplete(item);
 			} else {
@@ -2936,6 +2943,11 @@ _registerModule('Controller', {
 		initController: function() {
 			framework.extend(_options, _controllerDefaultOptions, true);
 			self.items = _items = items;
+			self.items.forEach( function ( item ) {
+				item.w = item.w || 400;
+				item.h = item.h || 400;
+			});
+			
 			_getItemAt = self.getItemAt;
 			_getNumItems = _options.getNumItemsFn; //self.getNumItems;
 
